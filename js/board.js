@@ -7,13 +7,27 @@ game.board = {
     createCells() {
         for(let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
-                this.cells.push({
+
+                this.cells.push(this.createCell(row, col));
+                /*this.cells.push({
                     x: 64*col + 65,
                     y: 24*row + 35
-                })
+                })*/
             }
         }
-
+        console.log(this.cells);
+    },
+    createCell(row, col) {
+        let cellWidth = this.game.sprites.greyBrick.width + 2;
+        let cellHeight = this.game.sprites.greyBrick.height + 2;
+        let offsetX = (this.game.width - cellWidth * this.cols) / 2;
+        let offsetY = (this.game.height - cellHeight * this.rows*4) / 2;
+        return  {
+            row: row,
+            col: col,
+            x: offsetX + cellWidth*col,
+            y: offsetY + cellHeight*row,
+        }
     },
     createBricksLine() {
         for(let line = 0; line < this.cells.length/this.cols; line++) {
