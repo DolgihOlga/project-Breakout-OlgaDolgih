@@ -36,9 +36,12 @@ let game = {
         this.setEvents();
     },
     setEvents() {
+
         window.addEventListener('keydown', e => {
-            if (e.keyCode === 37 || e.keyCode === 39) {
-                this.paddle.start(e.keyCode);
+            if(e.code === 'Space') {
+                this.paddle.push();
+            } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+                this.paddle.start(e.code);
             }
         });
         window.addEventListener("keyup", e => {
@@ -102,13 +105,21 @@ let game = {
     create() {
         this.board.createCells();
         this.board.createBricksLine();
-        this.paddle.setCoords();
+        this.paddle.setCoordsPaddle();
+        this.ball.setBallCoords();
 
         //console.log(this.board);
     },
+    random(min, max) {
+        return Math.floor(Math.random()*(max-min + 1) + min);
+    },
     update() {
         this.paddle.move();
+        this.ball.move();
+        this.ball.collideBricks();
+        this.ball.collidePaddle();
     },
+
     run() {
         window.requestAnimationFrame(() => {
             this.update();
@@ -117,7 +128,7 @@ let game = {
         })
     },
     render() {
-        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.clearRect(0, 0, this.width, this.height);// перед тем как отрисовать новый кадр, очистить все, что было
         this.ctx.drawImage(this.sprites.background, (this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
         this.board.render();
         this.paddle.render();

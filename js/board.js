@@ -1,31 +1,32 @@
 game.board = {
     game: game,
-    cells: [],
+    bricks: [],
     bricksLine: [],
     rows: 4,
     cols: 8,
     createCells() {
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
-                this.cells.push(this.createCell(row, col));
+                this.bricks.push(this.createCell(row, col));
             }
         }
+        console.log(this.bricks);
     },
     createCell(row, col) {
-        let cellWidth = this.game.sprites.greyBrick.width + 2;
-        let cellHeight = this.game.sprites.greyBrick.height + 2;
-        let offsetX = (this.game.width - cellWidth * this.cols) / 2;
-        let offsetY = (this.game.height - cellHeight * this.rows * 4) / 2;
+        let brickWidth = this.game.sprites.greyBrick.width + 2;
+        let brickHeight = this.game.sprites.greyBrick.height + 2;
+        let offsetX = (this.game.width - brickWidth * this.cols) / 2;
+        let offsetY = (this.game.height - brickHeight * this.rows * 4) / 2;
         return {
-            row: row,
-            col: col,
-            x: offsetX + cellWidth * col,
-            y: offsetY + cellHeight * row,
+            width: 60,
+            height: 20,
+            x: offsetX + brickWidth * col,
+            y: offsetY + brickHeight * row,
         }
     },
     createBricksLine() {
-        for (let line = 0; line < this.cells.length / this.cols; line++) {
-            this.bricksLine[line] = this.cells.slice(line * this.cols, (line * this.cols) + this.cols);
+        for (let line = 0; line < this.bricks.length / this.cols; line++) {
+            this.bricksLine[line] = this.bricks.slice(line * this.cols, (line * this.cols) + this.cols);
         }
     },
     render() {
