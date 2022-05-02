@@ -33,10 +33,10 @@ game.ball = {
     },
     collideBricks() {
         for (let brick of this.game.board.bricks) {
-            if (this.collide(brick)) {
-                this.bumpBlock(brick);
+            if(brick.active && this.collide(brick)) {
+                    this.bumpBlock(brick);
+                }
             }
-        }
 
     },
     collidePaddle() {
@@ -54,15 +54,50 @@ game.ball = {
             y + this.size > brick.y &&
             y < brick.y + brick.height;
     },
+    collideWall() {
+        let x = this.coordsBall[0].x + this.dx;
+        let y = this.coordsBall[0].y + this.dy;
+
+        let ballLeft = x;
+        let ballRight = ballLeft + this.size;
+        let ballTop = y;
+        let ballBottom = ballTop + this.size;
+
+        let worldLeft = (this.game.width - this.game.sprites.background.width) / 2;
+        let worldRight = (this.game.width - this.game.sprites.background.width) / 2 + this.game.sprites.background.width;
+        let worldTop = (this.game.height - this.game.sprites.background.height) / 2;
+        let worldBottom = this.game.height;
+
+        if (ballLeft < worldLeft) {
+            this.x = 0;
+            this.dx = this.speed;
+
+        } else if (ballRight > worldRight) {
+            this.x = worldRight - this.width;
+            this.dx = -this.speed;
+
+        } else if (ballTop < worldTop) {
+            this.y = 0;
+            this.dy = this.speed;
+
+        } else if (ballBottom > worldBottom) {
+            console.log('game over')
+        }
+    },
+
+
 
     bumpBlock(brick) {
         this.dy *= -1;
+        brick.active = false;
     },
     bumpPaddle(paddle) {
-        this.dy *= -1;
-        let touchX = this.coordsBall[0].x + this.size / 2;
-        console.log(paddle.getTouchOffset(touchX));
-        this.dx = this.speed * paddle.getTouchOffset(touchX);
+        if(this.dy > 0) {
+            this.dy = -this.speed;
+            let touchX = this.coordsBall[0].x + this.size / 2;
+            //console.log(paddle.getTouchOffset(touchX));
+            this.dx = this.speed * paddle.getTouchOffset(touchX);
+        }
+    },
 
-    }
 }

@@ -24,7 +24,7 @@ let game = {
             height: 400
         },
         min: {
-            width: 550,
+            width: 640,
             height: 400
         }
     },
@@ -57,12 +57,14 @@ let game = {
             minHeight: this.dimensions.min.height,
             realWidth: window.innerWidth,
             realHeight: window.innerHeight
-        }
-        if (data.realWidth / data.realHeight > data.maxWidth / data.maxHeight) {
-            this.fitWidth(data) // если коэфициент realWidth/ realHeight больше, то подгоняем по ширине
+        };
+
+        if (data.realWidth/data.realHeight > data.maxWidth/data.maxHeight) {
+            this.fitWidth(data);
         } else {
-            this.fitHeight(data) //растянуть по высоте
+            this.fitHeight(data);
         }
+
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     },
@@ -71,18 +73,14 @@ let game = {
         this.height = Math.min(this.height, data.maxHeight);
         this.height = Math.max(this.height, data.minHeight);
         this.width = Math.round(data.realWidth * this.height / data.realHeight);
-        this.canvas.style.width = '100%';
+        this.canvas.style.width = "100%";
     },
-
     fitHeight(data) {
-        this.width = Math.round((data.realWidth * data.maxHeight) / data.realHeight);
+        this.width = Math.round(data.realWidth * data.maxHeight / data.realHeight);
         this.width = Math.min(this.width, data.maxWidth);
-        this.width = Math.max(this.width, data.minWidth);
-        this.height = Math.round((this.width * data.realHeight) / data.realWidth);
-        this.canvas.style.height = '100%';
-        console.log(this.width, this.height);
-        // realWidth / realHeight
-        // resultWidth / maxHeight
+        /*this.width = Math.max(this.width, data.minWidth);*/
+        this.height = Math.round(this.width * data.realHeight / data.realWidth);
+        this.canvas.style.height = "100%";
     },
     preload(callback) {
         let load = 0;
@@ -103,8 +101,7 @@ let game = {
         }
     },
     create() {
-        this.board.createCells();
-        this.board.createBricksLine();
+        this.board.create();
         this.paddle.setCoordsPaddle();
         this.ball.setBallCoords();
 
@@ -114,10 +111,11 @@ let game = {
         return Math.floor(Math.random()*(max-min + 1) + min);
     },
     update() {
-        this.paddle.move();
-        this.ball.move();
         this.ball.collideBricks();
         this.ball.collidePaddle();
+        this.ball.collideWall();
+        this.paddle.move();
+        this.ball.move();
     },
 
     run() {
@@ -129,7 +127,7 @@ let game = {
     },
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);// перед тем как отрисовать новый кадр, очистить все, что было
-        this.ctx.drawImage(this.sprites.background, (this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
+        this.ctx.drawImage(this.sprites.background,(this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
         this.board.render();
         this.paddle.render();
         this.ball.render();
