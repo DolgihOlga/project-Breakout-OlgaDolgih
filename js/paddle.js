@@ -5,7 +5,6 @@ game.paddle = {
     speed: 6,
     dx: 0,
     coords: [],
-
     ball: game.ball,
     push() {
         if(this.ball) {
@@ -45,7 +44,6 @@ game.paddle = {
     collide(paddle) {
         let x = this.game.ball.coordsBall[0].x + this.game.ball.dx;
         let y = this.game.ball.coordsBall[0].y + this.game.ball.dy;
-        //console.log(x,y);
         return x + this.game.ball.size > this.coords[0].x &&
             x < this.coords[0].x + paddle.width &&
             y + this.game.ball.size > this.coords[0].y &&
@@ -56,6 +54,17 @@ game.paddle = {
         let offset = this.width - diff;
         let result = 2*offset / this.width;
         return result - 1;
-    }
+    },
+    collideWall() {
+        let paddleLeft = this.coords[0].x + this.dx;
+        let paddleRight = paddleLeft + this.width;
+
+        let worldLeft = (this.game.width - this.game.sprites.background.width) / 2;
+        let worldRight = (this.game.width - this.game.sprites.background.width) / 2 + this.game.sprites.background.width;
+
+        if (paddleLeft < worldLeft || paddleRight > worldRight) {
+            this.dx = 0;
+        }
+    },
 }
 

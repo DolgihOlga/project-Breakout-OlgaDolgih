@@ -14,7 +14,6 @@ game.board = {
                 this.bricks.push(this.createCell(row, col));
             }
         }
-        console.log(this.bricks);
     },
     createCell(row, col) {
         let brickWidth = this.game.sprites.greyBrick.width + 2;
@@ -32,7 +31,6 @@ game.board = {
     createBricksLine() {
         for (let line = 0; line < this.bricks.length / this.cols; line++) {
             this.bricksLine[line] = this.bricks.slice(line * this.cols, (line * this.cols) + this.cols);
-            console.log(this.bricksLine)
         }
     },
     render() {

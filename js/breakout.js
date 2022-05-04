@@ -6,8 +6,14 @@ let game = {
     board: null,
     paddle: null,
     ball: null,
+    running: true,
+    score: 0,
+    lives: 3,
     width: 0,
     height: 0,
+    sounds: {
+        collision: null,
+    },
     sprites: {
         background: null,
         ball: null,
@@ -28,15 +34,18 @@ let game = {
             height: 400
         }
     },
-
     init() {
         this.canvas = document.getElementById('breakout');
         this.ctx = this.canvas.getContext('2d');
         this.initDimensions();
         this.setEvents();
+        this.setTextFont();
+    },
+    setTextFont() {
+        this.ctx.font = '20px Arial';
+        this.ctx.fillStyle = '#FFFFFF';
     },
     setEvents() {
-
         window.addEventListener('keydown', e => {
             if(e.code === 'Space') {
                 this.paddle.push();
@@ -47,7 +56,6 @@ let game = {
         window.addEventListener("keyup", e => {
             this.paddle.stop();
         });
-
     },
     initDimensions() {
         let data = {
@@ -64,7 +72,6 @@ let game = {
         } else {
             this.fitHeight(data);
         }
-
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     },
@@ -78,13 +85,14 @@ let game = {
     fitHeight(data) {
         this.width = Math.round(data.realWidth * data.maxHeight / data.realHeight);
         this.width = Math.min(this.width, data.maxWidth);
-        /*this.width = Math.max(this.width, data.minWidth);*/
+        this.width = Math.max(this.width, data.minWidth);
         this.height = Math.round(this.width * data.realHeight / data.realWidth);
         this.canvas.style.height = "100%";
     },
     preload(callback) {
         let load = 0;
         let required = Object.keys(this.sprites).length;
+        required += Object.keys(this.sounds).length;
         let onAssetLoad = () => {
             ++load;
             if (load >= required) {
@@ -92,6 +100,7 @@ let game = {
             }
         }
         this.preloadSprites(onAssetLoad);
+        this.preloadAudio(onAssetLoad);
     },
     preloadSprites(onAssetLoad) {
         for (let key in this.sprites) {
@@ -100,30 +109,47 @@ let game = {
             this.sprites[key].addEventListener('load', onAssetLoad);
         }
     },
+    preloadAudio(onAssetLoad) {
+        for (let key in this.sounds) {
+            this.sounds[key] = new Audio('sounds/' + key + '.wav');
+            this.sounds[key].addEventListener('canplaythrough', onAssetLoad, {once: true});
+        }
+    },
     create() {
         this.board.create();
         this.paddle.setCoordsPaddle();
         this.ball.setBallCoords();
-
-        //console.log(this.board);
     },
     random(min, max) {
         return Math.floor(Math.random()*(max-min + 1) + min);
+    },
+    addScore() {
+        ++this.score;
+        if (this.score >= game.board.bricks.length) {
+            this.end("You win");
+        }
+    },
+    end(message) {
+        this.running = false;
+        alert(message);
+        window.location.reload();
     },
     update() {
         this.ball.collideBricks();
         this.ball.collidePaddle();
         this.ball.collideWall();
+        this.paddle.collideWall();
         this.paddle.move();
         this.ball.move();
     },
-
     run() {
-        window.requestAnimationFrame(() => {
-            this.update();
-            this.render();
-            this.run();//отрисовываем, что заплапировали
-        })
+        if(this.running) {
+            window.requestAnimationFrame(() => {
+                this.update();
+                this.render();
+                this.run();
+            })
+        }
     },
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);// перед тем как отрисовать новый кадр, очистить все, что было
@@ -131,6 +157,8 @@ let game = {
         this.board.render();
         this.paddle.render();
         this.ball.render();
+        this.ctx.fillText(`Score: ${this.score}`, (this.width - this.sprites.background.width) / 2 + 20, (this.height - this.sprites.background.height) /2 + 20 );
+        this.ctx.fillText(`Lives: ${this.lives}`,(this.width - this.sprites.background.width) / 2 + this.sprites.background.width - 90, (this.height - this.sprites.background.height) /2 + 20 )
     },
     start() {
         this.init();
