@@ -1,3 +1,5 @@
+'use strict';
+
 game.ball = {
     game: game,
     size: 20,

@@ -1,3 +1,5 @@
+'use strict';
+
 game.paddle = {
     game: game,
     width: 100,
