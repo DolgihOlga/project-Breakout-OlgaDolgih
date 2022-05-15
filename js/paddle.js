@@ -6,10 +6,11 @@ game.paddle = {
     height: 20,
     speed: 6,
     dx: 0,
+    touchShiftX: 0,
     coords: [],
     ball: game.ball,
     push() {
-        if(this.ball) {
+        if (this.ball) {
             this.ball.start();
             this.ball = null;
         }
@@ -31,6 +32,25 @@ game.paddle = {
         } else if (direction === 'ArrowRight') {
             this.dx = this.speed
         }
+    },
+    touch(x) {
+        if(!x) {
+            this.stop();
+        } else if (x > this.coords[0].x) {
+            this.dx = this.speed
+        } else  if (x < this.coords[0].x) {
+            this.dx = -this.speed
+        }
+    },
+    touchStart(e) {
+        this.push();
+        this.touch(e.touches[0].clientX);
+    },
+    touchEnd(e) {
+        this.touch(null);
+    },
+    touchMove(e) {
+        this.touch(e.touches[0].clientX);
     },
     stop() {
         this.dx = 0;
@@ -54,7 +74,7 @@ game.paddle = {
     getTouchOffset(x) {
         let diff = (this.coords[0].x + this.width) - x;
         let offset = this.width - diff;
-        let result = 2*offset / this.width;
+        let result = 2 * offset / this.width;
         return result - 1;
     },
     collideWall() {
@@ -68,5 +88,6 @@ game.paddle = {
             this.dx = 0;
         }
     },
+
 }
 

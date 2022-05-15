@@ -9,7 +9,7 @@ const rules = {
       <div class="rules-container">
       <p>Use your right and left keys to move the paddle to bounce the ball up and break the bricks.</p>
       <p>If the player's paddle misses the ball's rebound, they will lose a turn.
-       The player has three turns to try to clear two screens of bricks</p> 
+       The player has three turns to try to clear screen of bricks</p> 
        <input type="button" value="Play" class="buttonPlay" id="play"> 
        </div>      
       </section>

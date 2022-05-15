@@ -17,7 +17,7 @@ const navBar = {
     render() {
         return `
       <div class="content" id="content">        
-       <h1>Breakout</h1>     
+       <h1>Breakout Game</h1>     
        <nav class="mainMenu" id="mainMenu">
             <input type="button" value="Play" class="mainMenu_link" id="play">
             <input type="button" value="Rules" class="mainMenu_link" id="rules">

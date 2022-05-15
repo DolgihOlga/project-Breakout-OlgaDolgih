@@ -47,7 +47,7 @@ let game = {
     },
     setEvents() {
         window.addEventListener('keydown', e => {
-            if(e.code === 'Space') {
+            if (e.code === 'Space') {
                 this.paddle.push();
             } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
                 this.paddle.start(e.code);
@@ -55,6 +55,18 @@ let game = {
         });
         window.addEventListener("keyup", e => {
             this.paddle.stop();
+        });
+
+        this.canvas.addEventListener('touchstart', e => {
+            this.paddle.touchStart(e);
+        });
+
+        this.canvas.addEventListener('touchmove', e => {
+            this.paddle.touchMove(e);
+        });
+
+        this.canvas.addEventListener('touchend', e => {
+            this.paddle.touchEnd(e);
         });
     },
     initDimensions() {
@@ -139,6 +151,7 @@ let game = {
         this.ball.collidePaddle();
         this.ball.collideWall();
         this.paddle.collideWall();
+
         this.paddle.move();
         this.ball.move();
     },
