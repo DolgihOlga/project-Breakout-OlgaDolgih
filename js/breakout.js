@@ -1,12 +1,19 @@
-'use strict';
+import {header} from "./components.js";
+import {SwitchToMainPage} from "./states.js";
+import {registration} from "./pages.js";
+import {score} from "./pages.js";
+import {getFieldName, checkLength} from "./pages.js";
 
-let game = {
+
+export const game = {
     canvas: null,
     ctx: null,
     board: null,
     paddle: null,
     ball: null,
+
     running: true,
+    results : {},
     score: 0,
     lives: 3,
     width: 0,
@@ -47,6 +54,7 @@ let game = {
     },
     setEvents() {
         window.addEventListener('keydown', e => {
+            //this.create();
             if (e.code === 'Space') {
                 this.paddle.push();
             } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
@@ -135,23 +143,12 @@ let game = {
     random(min, max) {
         return Math.floor(Math.random()*(max-min + 1) + min);
     },
-    addScore() {
-        ++this.score;
-        if (this.score >= game.board.bricks.length) {
-            this.end("You win");
-        }
-    },
-    end(message) {
-        this.running = false;
-        alert(message);
-        window.location.reload();
-    },
+
     update() {
         this.ball.collideBricks();
         this.ball.collidePaddle();
         this.ball.collideWall();
         this.paddle.collideWall();
-
         this.paddle.move();
         this.ball.move();
     },
@@ -171,7 +168,102 @@ let game = {
         this.paddle.render();
         this.ball.render();
         this.ctx.fillText(`Score: ${this.score}`, (this.width - this.sprites.background.width) / 2 + 20, (this.height - this.sprites.background.height) /2 + 20 );
-        this.ctx.fillText(`Lives: ${this.lives}`,(this.width - this.sprites.background.width) / 2 + this.sprites.background.width - 90, (this.height - this.sprites.background.height) /2 + 20 )
+        this.ctx.fillText(`Lives: ${this.lives}`,(this.width - this.sprites.background.width) / 2 + this.sprites.background.width - 90, (this.height - this.sprites.background.height) /2 + 20 );
+
+    },
+    addScore() {
+        ++this.score;
+        if (this.score >= game.board.bricks.length) {
+            this.end();
+
+        }
+    },
+    end() {
+        this.running = false;
+        document.getElementById("breakout").style.visibility = "hidden";
+        this.renderRegistration();
+        document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
+
+    },
+    renderReg() {
+        const content = document.getElementById("spa");
+        content.innerHTML += header.render();
+        content.innerHTML += registration.render();
+        document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
+    },
+
+    renderRegistration() {
+        this.renderReg();
+        const container = document.querySelector('.container');
+        const form = document.getElementById('form');
+        const userName = document.getElementById('username');
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            this.results.name = userName.value;
+            this.results.score = this.score;
+            checkLength(userName, 1, 15).then(data => {
+                container.style.display = "none";
+                this.sendInfo(this.results);
+                this.stopGame();
+            }).catch(error =>{
+                console.log(error);
+            });        
+
+            console.log(this.results);
+
+        });
+    },
+
+    stopGame() {
+        const content = document.getElementById("spa");
+        content.innerHTML += score.render();
+        document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
+        let btn = document.getElementById('btn');
+        btn.addEventListener("click", () => {
+            window.location.reload();
+        });
+    },
+
+    sendInfo(hash) {
+            let password = Math.random();
+            $.ajax({
+                url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                data: {f: 'LOCKGET', n: 'DOLGIH_SCORE', p: password},
+                success: lockGetReady,
+                error: errorHandler
+            });
+
+            function lockGetReady(data) {
+                console.log(data);
+                let results = JSON.parse(data.result);
+                console.log(results);
+                /*console.log(data);
+                let results = JSON.parse(data.result);
+                console.log(results);*/
+                const modefiedResults = [...results, hash];
+                $.ajax({
+                        url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
+                        type: "POST",
+                        cache: false,
+                        dataType: "json",
+                        data: {f: 'UPDATE', n: 'DOLGIH_SCORE', p: password, v: JSON.stringify(modefiedResults)},
+                        success: updateReady,
+                        error: errorHandler
+                    }
+                );
+
+                function updateReady(data) {
+                    console.log(data)
+                    if (data.error !== undefined)
+                        alert(data.error);
+                }
+            }
+        function errorHandler(jqXHR, statusStr, errorStr) {
+            alert(statusStr + ' ' + errorStr);
+        }
     },
     start() {
         this.init();
@@ -179,8 +271,8 @@ let game = {
             this.create();
             this.run();
         });
-    }
-}
+    },
+};
 
 window.addEventListener('load', () => {
     game.start();

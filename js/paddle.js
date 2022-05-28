@@ -1,4 +1,5 @@
-'use strict';
+
+import {game} from "./breakout.js";
 
 game.paddle = {
     game: game,

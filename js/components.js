@@ -1,6 +1,6 @@
-'use strict';
 
-const header = {
+
+export const header = {
     render() {
         return `      
       <header class="header" id="header">
@@ -13,7 +13,7 @@ const header = {
     }
 };
 
-const navBar = {
+export const navBar = {
     render() {
         return `
       <div class="content" id="content">        
@@ -21,7 +21,7 @@ const navBar = {
        <nav class="mainMenu" id="mainMenu">
             <input type="button" value="Play" class="mainMenu_link" id="play">
             <input type="button" value="Rules" class="mainMenu_link" id="rules">
-            <input type="button" value="Records" class="mainMenu_link" id="records">
+            <input type="button" value="Records" class="mainMenu_link" id="records">            
         </nav>
       </div>`;
     }

@@ -1,10 +1,16 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: rgb(252,82,170);
     text-align: center;
     margin: 0;
     padding: 0;
     font-family: 'Alegreya Sans SC', sans-serif;
+    min-height: 100vh;
 }
+
 canvas {
     position: absolute;
     top: 50%;
@@ -14,7 +20,6 @@ canvas {
 .header{
     flex: 0 0 auto;
     width: 90%;
-
 }
 .menu-buttons{
     display: flex;
@@ -105,9 +110,10 @@ h1{
 .mainMenu_link:active{
     transform: scale(0.95);
 }
-.buttonPlay {
+.buttonPlay{
+    cursor: pointer;
     background-color: #ffa200;
-    border: 5px double yellow;
+    border: 5px  yellow;
     border-radius: 5px;
     font-size: 30px;
     color: white;
@@ -117,20 +123,89 @@ h1{
     transition: 0.5s;
 }
 
-.buttonPlay:hover {
+.buttonPlay:hover, .btn:hover {
     border-color: #ffa200;
 }
-.buttonPlay:active {
+.buttonPlay:active, .btn:active {
     transform: scale(0.95);
 }
 h2 {
     color: white;
+    text-align: center;
+    margin: 0 0 20px;
 }
-.rules-container {
+.rules-container, .gameOver, .container {
+    max-width: 600px;
     border: 5px solid yellow;
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    padding: 50px;
+    padding: 50px 70px;
     line-height: 1.5;
     color: white;
+}
+
+.gameScore {
+    font-size: 25px;
+}
+
+.form {
+    padding: 10px 20px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.form-control label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control input {
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    display: block;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.form-control input:focus {
+    outline: 0;
+    border-color: #777;
+}
+
+.form button, #btn {
+    cursor: pointer;
+    background-color: #ffa200;
+    border: 2px solid #ffa200;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.form-control.success input {
+    border-color: #ffa200;
+}
+
+.form-control.error input {
+    border-color: yellow;
+}
+
+.form-control small {
+    color:yellow;
+    position: absolute;
+    left: 0;
+    visibility: hidden;
+}
+
+.form-control.error small {
+    visibility: visible;
 }

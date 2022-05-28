@@ -1,4 +1,5 @@
-'use strict';
+
+import {game} from "./breakout.js";
 
 game.ball = {
     game: game,
@@ -83,7 +84,8 @@ game.ball = {
         } else if (ballBottom > worldBottom) {
             --game.lives;
             if (!game.lives) {
-                game.end('You lost');
+                game.end();
+
             } else {
                 this.dx = 0;
                 this.dy = 0;
