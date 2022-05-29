@@ -6,9 +6,12 @@ export const header = {
       <header class="header" id="header">
         <ul class="menu-buttons">
             <li class="menu-button button-home" id="button-home"><a href="#"></a></li>
-            <li class="menu-button button-sound" id="button-sound"><a href="#"></a></li>
-        </ul>
+            <li class="menu-button button-sound" id="button-sound"></li>
+        </ul>        
     </header>
+    <audio id="audio"  loops>
+            <source src="sounds/stereomadness.mp3" type="audio/mpeg">
+     </audio>
     `;
     }
 };
@@ -27,4 +30,15 @@ export const navBar = {
     }
 };
 
+export function turnOnMusic() {
+    let music = document.getElementById('audio');
+    if (music.paused) {
+        document.getElementById('button-sound').classList.add('on');
+        music.play();
+    } else {
+        document.getElementById('button-sound').classList.remove('on');
+        music.currentTime = 0;
+        music.pause();
+    }
 
+}

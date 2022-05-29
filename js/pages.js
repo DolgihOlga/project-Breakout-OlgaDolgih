@@ -1,5 +1,6 @@
 import {game} from "./breakout.js";
 
+
 export const rules = {
     render() {
         return `
@@ -28,7 +29,8 @@ export const records = {
     render() {
         return `
        <h1>Breakout Game</h1>    
-       <h2>BEST RESULTS</h2>       
+       <h2>BEST RESULTS</h2> 
+       <div id="results"></div>      
       `
     },
 };

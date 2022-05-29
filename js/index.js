@@ -1,18 +1,12 @@
 
-import {header} from "./components.js";
-import {navBar} from "./components.js";
-import {rules} from "./pages.js";
-import {Game} from "./pages.js";
-import {records} from "./pages.js";
+import {header, navBar} from "./components.js";
+import {rules,Game, records} from "./pages.js";
 
-import {SwitchToMainPage} from "./states.js";
-import {SwitchToGamePage} from "./states.js";
-import {SwitchToRecordsPage} from "./states.js";
-import {SwitchToRulesPage} from "./states.js";
-
-
+import {SwitchToMainPage, SwitchToGamePage, SwitchToRecordsPage, SwitchToRulesPage, SwitchToState} from "./states.js";
+import {turnOnMusic} from "./components.js";
 
 (function () {
+
     window.onhashchange = SwitchToStateFromURLHash;
     let SPAStateH = {};
     let spa = document.getElementById ('spa');
@@ -29,12 +23,10 @@ import {SwitchToRulesPage} from "./states.js";
             case 'main':
                 PageHTML += header.render();
                 PageHTML += navBar.render();
-
                 break;
             case 'rules':
                 PageHTML += header.render();
                 PageHTML += rules.render();
-
                 break;
             case 'play':
                 PageHTML += Game.render();
@@ -43,7 +35,7 @@ import {SwitchToRulesPage} from "./states.js";
                 PageHTML += header.render();
                 PageHTML += records.render();
 
-                $.ajax({
+                /*$.ajax({
                     url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
                     type: 'POST',
                     dataType: 'json',
@@ -63,32 +55,40 @@ import {SwitchToRulesPage} from "./states.js";
 
                     results = JSON.parse(data.result);
                     console.log("results", JSON.parse(data.result));
-
-
-
+                    let records = document.getElementById('results');
+                    results.sort(function (a, b) {
+                        if (a.score < b.score) {
+                            return 1;
+                        }
+                        if (a.score > b.score) {
+                            return -1;
+                        }
+                        return 0;
+                    });
                     results.forEach((el) => {
                         if(el.score > 20) {
-                            PageHTML +=`<div><p>${el.name}: ${el.score}</p> </div>`;
+                            records.innerHTML +=`<div>${el.name}: ${el.score}</div>`;
                         }
-
                     });
 
-                    spa.innerHTML = PageHTML;
                     document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
+                    document.getElementById('button-sound').addEventListener('click', turnOnMusic);
                 }
 
             }
             function errorHandler(jqXHR, statusStr, errorStr) {
                 alert(statusStr + ' ' + errorStr);
-            }
+            }*/
 
         }
         spa.innerHTML = PageHTML;
-
+        document.getElementById('button-sound').addEventListener('click', turnOnMusic);
         document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
         document.getElementById('play').addEventListener('click', SwitchToGamePage);
         document.getElementById('rules').addEventListener('click', SwitchToRulesPage);
         document.getElementById('records').addEventListener('click', SwitchToRecordsPage);
+
+
     }
 
     SwitchToStateFromURLHash();

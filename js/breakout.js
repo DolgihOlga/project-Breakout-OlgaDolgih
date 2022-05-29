@@ -1,8 +1,9 @@
 import {header} from "./components.js";
 import {SwitchToMainPage} from "./states.js";
+
 import {registration} from "./pages.js";
 import {score} from "./pages.js";
-import {getFieldName, checkLength} from "./pages.js";
+import {checkLength} from "./pages.js";
 
 
 export const game = {
@@ -13,7 +14,7 @@ export const game = {
     ball: null,
 
     running: true,
-    results : {},
+    results: {},
     score: 0,
     lives: 3,
     width: 0,
@@ -87,7 +88,7 @@ export const game = {
             realHeight: window.innerHeight
         };
 
-        if (data.realWidth/data.realHeight > data.maxWidth/data.maxHeight) {
+        if (data.realWidth / data.realHeight > data.maxWidth / data.maxHeight) {
             this.fitWidth(data);
         } else {
             this.fitHeight(data);
@@ -141,7 +142,7 @@ export const game = {
         this.ball.setBallCoords();
     },
     random(min, max) {
-        return Math.floor(Math.random()*(max-min + 1) + min);
+        return Math.floor(Math.random() * (max - min + 1) + min);
     },
 
     update() {
@@ -153,7 +154,7 @@ export const game = {
         this.ball.move();
     },
     run() {
-        if(this.running) {
+        if (this.running) {
             window.requestAnimationFrame(() => {
                 this.update();
                 this.render();
@@ -163,12 +164,12 @@ export const game = {
     },
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);// перед тем как отрисовать новый кадр, очистить все, что было
-        this.ctx.drawImage(this.sprites.background,(this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
+        this.ctx.drawImage(this.sprites.background, (this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
         this.board.render();
         this.paddle.render();
         this.ball.render();
-        this.ctx.fillText(`Score: ${this.score}`, (this.width - this.sprites.background.width) / 2 + 20, (this.height - this.sprites.background.height) /2 + 20 );
-        this.ctx.fillText(`Lives: ${this.lives}`,(this.width - this.sprites.background.width) / 2 + this.sprites.background.width - 90, (this.height - this.sprites.background.height) /2 + 20 );
+        this.ctx.fillText(`Score: ${this.score}`, (this.width - this.sprites.background.width) / 2 + 20, (this.height - this.sprites.background.height) / 2 + 20);
+        this.ctx.fillText(`Lives: ${this.lives}`, (this.width - this.sprites.background.width) / 2 + this.sprites.background.width - 90, (this.height - this.sprites.background.height) / 2 + 20);
 
     },
     addScore() {
@@ -203,13 +204,13 @@ export const game = {
             this.results.score = this.score;
             checkLength(userName, 1, 15).then(data => {
                 container.style.display = "none";
+                console.log(this.results);
                 this.sendInfo(this.results);
-                this.stopGame();
-            }).catch(error =>{
-                console.log(error);
-            });        
 
-            console.log(this.results);
+                this.stopGame();
+            }).catch(error => {
+                console.log(error);
+            });
 
         });
     },
@@ -225,45 +226,75 @@ export const game = {
     },
 
     sendInfo(hash) {
-            let password = Math.random();
-            $.ajax({
-                url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
-                type: 'POST',
-                dataType: 'json',
-                cache: false,
-                data: {f: 'LOCKGET', n: 'DOLGIH_SCORE', p: password},
-                success: lockGetReady,
-                error: errorHandler
+        let password = Math.random();
+        let formDataLoc = new FormData();
+        formDataLoc.append('f', 'LOCKGET');
+        formDataLoc.append('n', 'DOLGIH_GAME_SCORES');
+        formDataLoc.append('p', `${password}`);
+        fetch('https://fe.it-academy.by/AjaxStringStorage2.php', {method: 'post', body: formDataLoc})
+            .then(response =>
+                response.json()
+            )
+            .then(data => {
+                    console.log(data);
+                    let results = JSON.parse(data.result);
+                    console.log(results);
+                   const modifiedRes = [...results, hash];
+
+
+                    let formDataUpdate = new FormData();
+                    formDataUpdate.append('f', 'UPDATE');
+                    formDataUpdate.append('n', 'DOLGIH_GAME_SCORES');
+                    formDataUpdate.append('p', `${password}`);
+                    formDataUpdate.append('v', `${JSON.stringify(modifiedRes)}`)
+                    return fetch('https://fe.it-academy.by/AjaxStringStorage2.php', {method: 'post', body: formDataUpdate})
+                }
+            ).then(data => {
+            console.log(data);
+        })
+            .catch(error => {
+                console.error(error);
             });
 
-            function lockGetReady(data) {
-                console.log(data);
-                let results = JSON.parse(data.result);
-                console.log(results);
-                /*console.log(data);
-                let results = JSON.parse(data.result);
-                console.log(results);*/
-                const modefiedResults = [...results, hash];
-                $.ajax({
-                        url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
-                        type: "POST",
-                        cache: false,
-                        dataType: "json",
-                        data: {f: 'UPDATE', n: 'DOLGIH_SCORE', p: password, v: JSON.stringify(modefiedResults)},
-                        success: updateReady,
-                        error: errorHandler
-                    }
-                );
 
-                function updateReady(data) {
-                    console.log(data)
-                    if (data.error !== undefined)
-                        alert(data.error);
+        /*$.ajax({
+            url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            data: {f: 'LOCKGET', n: 'DOLGIH_SCORE', p: password},
+            success: lockGetReady,
+            error: errorHandler
+        });
+
+        function lockGetReady(data) {
+            console.log(data);
+            let results = JSON.parse(data.result);
+            console.log(results);
+            /!*console.log(data);
+            let results = JSON.parse(data.result);
+            console.log(results);*!/
+            const modifiedResults = [...results, hash];
+            $.ajax({
+                    url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
+                    type: "POST",
+                    cache: false,
+                    dataType: "json",
+                    data: {f: 'UPDATE', n: 'DOLGIH_SCORE', p: password, v: JSON.stringify(modifiedResults)},
+                    success: updateReady,
+                    error: errorHandler
                 }
+            );
+
+            function updateReady(data) {
+                console.log(data)
+                if (data.error !== undefined)
+                    alert(data.error);
             }
-        function errorHandler(jqXHR, statusStr, errorStr) {
-            alert(statusStr + ' ' + errorStr);
         }
+    function errorHandler(jqXHR, statusStr, errorStr) {
+        alert(statusStr + ' ' + errorStr);
+    }*/
     },
     start() {
         this.init();
