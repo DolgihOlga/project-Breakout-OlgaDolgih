@@ -35,6 +35,50 @@ import {turnOnMusic} from "./components.js";
                 PageHTML += header.render();
                 PageHTML += records.render();
 
+                let password = Math.random();
+                let formData = new FormData();
+                formData.append("f", "READ");
+                formData.append("n", "DOLGIH_GAME_SCORES");
+                formData.append("p", password);
+
+                let requestOptions = {
+                    method: "POST",
+                    body: formData,
+                };
+                fetch("https://fe.it-academy.by/AjaxStringStorage2.php", requestOptions)
+                    .then((response) =>  response.json())
+                    .then((data) => {
+                        console.log("data", data.result);
+
+                        if (data.error !== undefined) {
+                            alert(data.error);
+                        } else if (data.result !== "") {
+                            let results = [];
+
+                            results = JSON.parse(data.result);
+                            console.log("results", JSON.parse(data.result));
+                            let records = document.getElementById('results');
+                            let sortedRes = results.sort(function (a, b) {
+                                if (a.score < b.score) {
+                                    return 1;
+                                }
+                                if (a.score > b.score) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+
+                            sortedRes.slice(0,10).forEach((el) => {
+
+                                    records.innerHTML +=`<div>${el.name}: ${el.score}</div>`;
+
+                            });
+
+                            document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
+                            document.getElementById('button-sound').addEventListener('click', turnOnMusic);
+                        }
+
+                    }).catch((error) => console.log("error", error));
                 /*$.ajax({
                     url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
                     type: 'POST',

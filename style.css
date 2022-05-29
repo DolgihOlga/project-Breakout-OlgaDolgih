@@ -151,8 +151,13 @@ h2 {
 }
 
 #results {
-    height: 300px;
-    overflow: hidden;
+    width: 200px;
+}
+
+#results div {
+    color: white;
+    border-bottom: solid yellow 2px;
+    padding: 3px;
 }
 
 .form {

@@ -12,7 +12,6 @@ export const game = {
     board: null,
     paddle: null,
     ball: null,
-
     running: true,
     results: {},
     score: 0,
@@ -227,34 +226,44 @@ export const game = {
 
     sendInfo(hash) {
         let password = Math.random();
-        let formDataLoc = new FormData();
-        formDataLoc.append('f', 'LOCKGET');
-        formDataLoc.append('n', 'DOLGIH_GAME_SCORES');
-        formDataLoc.append('p', `${password}`);
-        fetch('https://fe.it-academy.by/AjaxStringStorage2.php', {method: 'post', body: formDataLoc})
-            .then(response =>
-                response.json()
-            )
-            .then(data => {
-                    console.log(data);
-                    let results = JSON.parse(data.result);
-                    console.log(results);
-                   const modifiedRes = [...results, hash];
+        let formData = new FormData();
+        formData.append("f", "LOCKGET");
+        formData.append("n", "DOLGIH_GAME_SCORES");
+        formData.append("p", password);
 
+        let requestOptions = {
+            method: "POST",
+            body: formData,
+        };
 
-                    let formDataUpdate = new FormData();
-                    formDataUpdate.append('f', 'UPDATE');
-                    formDataUpdate.append('n', 'DOLGIH_GAME_SCORES');
-                    formDataUpdate.append('p', `${password}`);
-                    formDataUpdate.append('v', `${JSON.stringify(modifiedRes)}`)
-                    return fetch('https://fe.it-academy.by/AjaxStringStorage2.php', {method: 'post', body: formDataUpdate})
-                }
-            ).then(data => {
-            console.log(data);
-        })
-            .catch(error => {
-                console.error(error);
-            });
+        fetch("https://fe.it-academy.by/AjaxStringStorage2.php", requestOptions)
+            .then((response) =>  response.json())
+            .then((data) => {
+
+                let results = JSON.parse(data.result);
+                console.log("results", results);
+                const modifiedRes = [...results, hash];
+
+                let formData = new FormData();
+                formData.append("f", "UPDATE");
+                formData.append("n", "DOLGIH_GAME_SCORES");
+                formData.append("p", password);
+                formData.append(
+                    "v",
+                    `${JSON.stringify(modifiedRes)}`
+                );
+
+                let requestOptions = {
+                    method: "POST",
+                    body: formData,
+                };
+
+                fetch("https://fe.it-academy.by/AjaxStringStorage2.php", requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => console.log("result2", result))
+                    .catch((error) => console.log("error", error));
+            })
+            .catch((error) => console.log("error", error));
 
 
         /*$.ajax({
