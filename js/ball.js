@@ -1,4 +1,3 @@
-
 import {game} from "./breakout.js";
 
 game.ball = {

@@ -4,11 +4,13 @@
 
 body {
     background-color: rgb(252,82,170);
-    text-align: center;
     margin: 0;
     padding: 0;
-    font-family: 'Alegreya Sans SC', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
+    font-family: 'Alegreya Sans SC', sans-serif;
 }
 
 canvas {
@@ -16,50 +18,6 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-.header{
-    flex: 0 0 auto;
-    width: 90%;
-}
-.menu-buttons{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-}
-.menu-button{
-    list-style: none;
-}
-.menu-button {
-    display: block;
-    width: 70px;
-    height: 70px;
-    box-sizing: border-box;
-    border-radius: 50%;
-    border: 5px double yellow;
-    background-color: white;
-    background-repeat: no-repeat;
-    box-shadow: 2px 2px 5px grey;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.menu-button:hover{
-    border:5px double lightcoral;
-}
-.menu-button:active{
-    transform: scale(0.95);
-}
-.button-home{
-    background-image: url('./img/home.png');
-    background-position: 3px 0;
-}
-.button-sound{
-    background-image: url('./img/sprite.png') ;
-    background-position: -52px 5px ;
-    transition: 0.5s;
-}
-.button-sound.on{
-    background-position: 3px 5px ;
 }
 
 #spa{
@@ -69,59 +27,151 @@ canvas {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*height: 100vh;*/
+    /*width: 90vw;
+    height: 100vh;*/
     position: relative;
 }
 
+/*main page*/
+
+.header{
+    display: flex;
+    width: 90%;
+}
+
+.menu-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.menu-button {
+    list-style: none;
+    width: 6vw;
+    height: 6vw;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: double yellow;
+    background-color: white;
+    background-repeat: no-repeat;
+    box-shadow: 2px 2px 5px grey;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-button:hover{
+    border:5px double lightcoral;
+}
+
+.menu-button:active{
+    transform: scale(0.95);
+}
+
+.button-home{
+    background-image: url('./img/home.png');
+    background-size: 5vw;
+    background-position: center;
+}
+
+.button-sound{
+    background-image: url('./img/sprite.png');
+    background-size: 10vw;
+    background-position: -5vw;
+    transition: 0.5s;
+}
+
+.button-sound.on{
+    background-position: 0;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
 h1{
-    font-size: 80px;
+    font-size: 5vw;
     color: white;
     text-shadow: 3px 2px 2px #d3d3d3;
     font-weight: bold;
     text-align: center;
     margin-top: 0;
+    margin-bottom: 2vw;
 }
+
 .mainMenu {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 30vw;
 }
 
 .mainMenu_link{
     width: 80%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 5px double yellow;
+    height: 7vw;
+    padding: 1vw;
+    border-radius: 2vw;
+    border: double yellow;
     box-shadow: 2px 2px 3px gray;
     background-color: #ffa200;
-    margin-bottom: 30px;
-    font-size: 40px;
+    margin-bottom: 2vw;
+    font-size: 4vw;
     text-align: center;
     text-shadow: 2px 1px 1px gray;
     color:white;
-
 }
+
 .mainMenu_link:hover{
-    height: 72px;
+    height: 7vw;
     color: lightcoral;
-    font-size: 32px;
+    font-size: 3vw;
     transition: 0.5s;
 
 }
 .mainMenu_link:active{
     transform: scale(0.95);
 }
+/*rules page*/
+
+.rules{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: white;
+    font-size: 3vw;
+    text-align: center;
+    margin: 0 0 2vw;
+}
+
+.rules-container {
+    font-size: 1vw;
+    border: 0.5vw solid yellow;
+    border-radius: 1vw;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    padding: 3vw 5vw;
+    text-align: center;
+    line-height: 1.5;
+    color: white;
+}
+
 .buttonPlay{
     cursor: pointer;
     background-color: #ffa200;
-    border: 5px  yellow;
-    border-radius: 5px;
-    font-size: 30px;
+    border: #ffa200;
+    border-radius: 1vw;
+    font-size: 3vw;
     color: white;
     text-shadow: 2px 1px 1px gray;
-    height: 50px;
-    width: 200px;
+    padding: 0.5vw;
+    width: 13vw;
     transition: 0.5s;
 }
 
@@ -131,58 +181,59 @@ h1{
 .buttonPlay:active, .btn:active {
     transform: scale(0.95);
 }
-h2 {
-    color: white;
-    text-align: center;
-    margin: 0 0 20px;
+
+/*records page*/
+#results {
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-.rules-container, .gameOver, .container {
-    max-width: 600px;
-    border: 5px solid yellow;
-    border-radius: 10px;
+
+#results div {
+    width: 70%;
+    text-align: center;
+    font-size: 1vw;
+    color: white;
+    border-bottom: solid yellow 0.2vw;
+    padding: 0.2vw;
+}
+/*form page*/
+.container, .gameOver {
+    font-size: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 40vw;
+    border: 0.5vw solid yellow;
+    border-radius: 0.5vw;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    padding: 50px 70px;
+    padding: 4vw 6vw;
     line-height: 1.5;
     color: white;
 }
 
-.gameScore {
-    font-size: 25px;
-}
-
-#results {
-    width: 200px;
-}
-
-#results div {
-    color: white;
-    border-bottom: solid yellow 2px;
-    padding: 3px;
-}
-
-.form {
-    padding: 10px 20px;
-}
-
 .form-control {
-    margin-bottom: 10px;
-    padding-bottom: 20px;
+    margin-bottom: 1vw;
+    padding-bottom: 2vw;
     position: relative;
 }
 
 .form-control label {
     color: white;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.5vw;
 }
 
 .form-control input {
-    border: 2px solid #f0f0f0;
-    border-radius: 4px;
+    border: solid #f0f0f0;
+    border-radius: 0.5vw;
     display: block;
     width: 100%;
-    padding: 5px;
-    font-size: 14px;
+    padding: 1vw;
 }
 
 .form-control input:focus {
@@ -191,15 +242,15 @@ h2 {
 }
 
 .form button, #btn {
+    font-size: 1.5vw;
     cursor: pointer;
     background-color: #ffa200;
-    border: 2px solid #ffa200;
-    border-radius: 4px;
+    border: solid #ffa200;
+    border-radius: 0.5vw;
     color: #fff;
     display: block;
-    font-size: 16px;
-    padding: 10px;
-    margin-top: 20px;
+    padding: 1vw;
+    margin-top: 2vw;
     width: 100%;
 }
 
@@ -221,64 +272,10 @@ h2 {
 .form-control.error small {
     visibility: visible;
 }
-
-@media screen and (max-width: 920px){
-    .menu-button {
-        width: 60px;
-        height: 60px;
-        box-sizing: border-box;
-        border-radius: 50%;
-        border: 5px double yellow;
-        background-color: white;
-        background-repeat: no-repeat;
-        box-shadow: 2px 2px 5px grey;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .button-home{
-        background-image: url('./img/home.png');
-        background-position: 0 -5px;
-    }
-    .button-sound{
-        background-image: url('./img/sprite.png') ;
-        background-position: -52px 0;
-        transition: 0.5s;
-    }
-    .button-sound.on{
-        background-position: 0 2px ;
-    }
-    h1 {
-        font-size: 50px;
-        margin-bottom: 5px;
-    }
-    .menu-buttons {
-        margin-bottom: 0;
-    }
-
-    .mainMenu_link{
-        height: 50px;
-        width: 70%;
-        border-radius: 10px;
-        border: 3px double yellow;
-        margin-bottom: 10px;
-        font-size: 30px;
-
-    }
-    .mainMenu_link:hover{
-        height: 50px;
-        font-size: 22px;
-    }
-    .rules-container, .gameOver, .container {
-        border: 5px solid yellow;
-        border-radius: 10px;
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        padding: 5px 20px;
-        line-height: 1.5;
-        font-size: 15px;
-        color: white;
-    }
-    h2 {
-        margin-bottom: 5px;
-    }
-
+h3 {
+    font-size: 3vw;
+    margin-bottom: 0;
+}
+.gameScore {
+    font-size: 2vw;
 }

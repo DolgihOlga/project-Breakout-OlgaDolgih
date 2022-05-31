@@ -1,15 +1,13 @@
-
-
 export const header = {
     render() {
         return `      
       <header class="header" id="header">
         <ul class="menu-buttons">
-            <li class="menu-button button-home" id="button-home"><a href="#"></a></li>
+            <li class="menu-button button-home" id="button-home"></li>
             <li class="menu-button button-sound" id="button-sound"></li>
         </ul>        
     </header>
-    <audio id="audio"  loops>
+    <audio id="audio"  loop>
             <source src="sounds/stereomadness.mp3" type="audio/mpeg">
      </audio>
     `;
@@ -40,5 +38,4 @@ export function turnOnMusic() {
         music.currentTime = 0;
         music.pause();
     }
-
 }

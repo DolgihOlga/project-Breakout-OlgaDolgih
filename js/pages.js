@@ -1,6 +1,5 @@
 import {game} from "./breakout.js";
 
-
 export const rules = {
     render() {
         return `
@@ -17,12 +16,12 @@ export const rules = {
     `;
     }
 };
+
 export const Game = {
     render() {
         return `    
     <canvas id="breakout"></canvas>`
-
-    },
+    }
 };
 
 export const records = {
@@ -34,56 +33,52 @@ export const records = {
       `
     },
 };
+
 export const registration = {
     render() {
         return `
         <div class="container">    
-        <form  id="form" class="form">
-        <h2>Register With Us</h2>
-        <div class="form-control">        
-        <label for="username">Username</label>
-        <input type="text" placeholder="Enter username" id="username">
-        <button id="submit">Save</button>
-        <small>error massage</small>
-        </div>
-        </form> 
+           <form  id="form" class="form">
+           <h2>Register With Us</h2>
+           <div class="form-control">        
+              <label for="username">Username</label>
+              <input type="text" placeholder="Enter username" id="username">
+              <button id="submit">Save</button>
+            <small>error massage</small>
+            </div>
+           </form> 
         </div>   
         `
     }
 }
-
 
 export const score = {
     render() {
         let input = document.getElementById('username')
         return `
         <div class="gameOver">
-           <h2>GAME OVER!</h2>
-           <div class="gameScore"><p>${input.value} YOUR SCORE: ${game.score}</p></div>
+           <h3>GAME OVER!</h3>
+           <div class="gameScore"><p>${input.value} Your score: ${game.score}</p></div>
            <button id="btn">Try again</button>
-
-        </div>
-        `
+        </div> `
     }
 }
-
 
 export function getFieldName(input) {
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 }
 
-
 export const checkLength = (input, min, max) => {
     return new Promise((resolve, reject) => {
         if (input.value.length > min && input.value.length < max && input.value.length !== '') {
             const formControl = input.parentElement;
-            formControl.className =  'form-control success';
+            formControl.className = 'form-control success';
             resolve()
-        } else   {
+        } else {
             const formControl = input.parentElement;
             formControl.className = 'form-control error';
             const small = formControl.querySelector('small');
-            small.innerText = `${getFieldName(input)} must be less than ${max} and must be at least ${min}characters`;
+            small.innerText = `${getFieldName(input)} must be at least ${min} and must be less than ${max} characters`;
             reject(small.innerText);
         }
     });

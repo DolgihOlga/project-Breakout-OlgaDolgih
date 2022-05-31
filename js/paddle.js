@@ -1,4 +1,3 @@
-
 import {game} from "./breakout.js";
 
 game.paddle = {
@@ -35,11 +34,11 @@ game.paddle = {
         }
     },
     touch(x) {
-        if(!x) {
+        if (!x) {
             this.stop();
         } else if (x > this.coords[0].x) {
             this.dx = this.speed
-        } else  if (x < this.coords[0].x) {
+        } else if (x < this.coords[0].x) {
             this.dx = -this.speed
         }
     },
@@ -89,6 +88,5 @@ game.paddle = {
             this.dx = 0;
         }
     },
-
 }
 

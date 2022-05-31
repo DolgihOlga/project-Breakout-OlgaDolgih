@@ -1,5 +1,4 @@
 
-
 export function SwitchToState(NewStateH) {
     location.hash = encodeURIComponent(JSON.stringify(NewStateH));
 }

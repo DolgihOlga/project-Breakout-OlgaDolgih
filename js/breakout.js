@@ -1,10 +1,8 @@
 import {header} from "./components.js";
 import {SwitchToMainPage} from "./states.js";
 
-import {registration} from "./pages.js";
-import {score} from "./pages.js";
+import {registration, score} from "./pages.js";
 import {checkLength} from "./pages.js";
-
 
 export const game = {
     canvas: null,
@@ -54,7 +52,6 @@ export const game = {
     },
     setEvents() {
         window.addEventListener('keydown', e => {
-            //this.create();
             if (e.code === 'Space') {
                 this.paddle.push();
             } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
@@ -143,7 +140,6 @@ export const game = {
     random(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
-
     update() {
         this.ball.collideBricks();
         this.ball.collidePaddle();
@@ -163,7 +159,7 @@ export const game = {
     },
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);// перед тем как отрисовать новый кадр, очистить все, что было
-        this.ctx.drawImage(this.sprites.background, (this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2);
+        this.ctx.drawImage(this.sprites.background, (this.width - this.sprites.background.width) / 2, (this.height - this.sprites.background.height) / 2); // с координат х, у планируем вывод изображения
         this.board.render();
         this.paddle.render();
         this.ball.render();
@@ -175,15 +171,12 @@ export const game = {
         ++this.score;
         if (this.score >= game.board.bricks.length) {
             this.end();
-
         }
     },
     end() {
         this.running = false;
         document.getElementById("breakout").style.visibility = "hidden";
-        this.renderRegistration();
-        document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
-
+        this.saveScore();
     },
     renderReg() {
         const content = document.getElementById("spa");
@@ -191,8 +184,7 @@ export const game = {
         content.innerHTML += registration.render();
         document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
     },
-
-    renderRegistration() {
+    saveScore() {
         this.renderReg();
         const container = document.querySelector('.container');
         const form = document.getElementById('form');
@@ -205,16 +197,14 @@ export const game = {
                 container.style.display = "none";
                 console.log(this.results);
                 this.sendInfo(this.results);
-
-                this.stopGame();
+                this.renderScore();
             }).catch(error => {
                 console.log(error);
             });
 
         });
     },
-
-    stopGame() {
+    renderScore() {
         const content = document.getElementById("spa");
         content.innerHTML += score.render();
         document.getElementById('button-home').addEventListener('click', SwitchToMainPage);
@@ -237,7 +227,7 @@ export const game = {
         };
 
         fetch("https://fe.it-academy.by/AjaxStringStorage2.php", requestOptions)
-            .then((response) =>  response.json())
+            .then((response) => response.json())
             .then((data) => {
 
                 let results = JSON.parse(data.result);
@@ -264,46 +254,6 @@ export const game = {
                     .catch((error) => console.log("error", error));
             })
             .catch((error) => console.log("error", error));
-
-
-        /*$.ajax({
-            url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            data: {f: 'LOCKGET', n: 'DOLGIH_SCORE', p: password},
-            success: lockGetReady,
-            error: errorHandler
-        });
-
-        function lockGetReady(data) {
-            console.log(data);
-            let results = JSON.parse(data.result);
-            console.log(results);
-            /!*console.log(data);
-            let results = JSON.parse(data.result);
-            console.log(results);*!/
-            const modifiedResults = [...results, hash];
-            $.ajax({
-                    url: 'https://fe.it-academy.by/AjaxStringStorage2.php',
-                    type: "POST",
-                    cache: false,
-                    dataType: "json",
-                    data: {f: 'UPDATE', n: 'DOLGIH_SCORE', p: password, v: JSON.stringify(modifiedResults)},
-                    success: updateReady,
-                    error: errorHandler
-                }
-            );
-
-            function updateReady(data) {
-                console.log(data)
-                if (data.error !== undefined)
-                    alert(data.error);
-            }
-        }
-    function errorHandler(jqXHR, statusStr, errorStr) {
-        alert(statusStr + ' ' + errorStr);
-    }*/
     },
     start() {
         this.init();
